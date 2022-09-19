@@ -1,0 +1,27 @@
+import Foundation
+
+class player{
+  let playerName: String
+  let playerAge: Int
+  var handValue: Int
+
+  init(playerName: String, playerAge: Int, handValue: Int){
+    self.playerName = playerName
+    self.playerAge = playerAge
+    self.handValue = handValue
+  }
+}
+
+class card{
+  let cardSuit: String
+  let cardName: String
+  var cardValue: Int
+
+  init(cardSuit: String, cardName: String, cardValue: Int){
+    self.cardSuit = cardSuit
+    self.cardName = cardName
+    self.cardValue = cardValue
+  }
+}
+
+var gameDeck: Array<card> = Array()
