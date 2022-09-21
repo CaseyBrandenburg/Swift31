@@ -13,12 +13,12 @@ class player{
 }
 
 class card{
-  let cardSuit: String
-  let cardName: String
-  let cardID: String
+  var cardSuit: String
+  var cardName: String
+  var cardID: Int
   var cardValue: Int
 
-  init(cardSuit: String, cardName: String, cardValue: Int, cardID: String){
+  init(cardSuit: String, cardName: String, cardValue: Int, cardID: Int){
     self.cardSuit = cardSuit
     self.cardName = cardName
     self.cardValue = cardValue
@@ -29,12 +29,9 @@ class card{
 var gameDeck: Array<card> = Array()
 
 for Suit in 0...3{
-  for ID in 1...14{
-    var newCard: card(cardSuit: "", cardName: "", cardValue = 0, cardID = Suit * 14 + ID)
+  for ID in 2...14{
+    let newCard = card(cardSuit: "", cardName: "", cardValue: 0, cardID: Suit * 14 + ID - 1)
     switch ID{
-      case 1:
-        newCard.cardName = "One"
-        newCard.cardValue = 1
       case 2:
         newCard.cardName = "Two"
         newCard.cardValue = 2
@@ -74,6 +71,8 @@ for Suit in 0...3{
       case 14:
         newCard.cardName = "Ace"
         newCard.cardValue = 11
+      default:
+        print("Something went wrong in the ID switch statement")
     }
     switch Suit{
       case 0:
@@ -84,11 +83,14 @@ for Suit in 0...3{
         newCard.cardSuit = "Clubs"
       case 3:
         newCard.cardSuit = "Diamonds"
+      default:
+        print("Something went wrong in the Suit switch statement")
     }
     gameDeck.append(newCard)
   }
 }
 
+print(gameDeck.count)
 for num in 0 ..< gameDeck.count{
-  print(gameDeck[num])
+  print(gameDeck[num].cardID)
 }
