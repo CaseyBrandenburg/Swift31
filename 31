@@ -15,13 +15,80 @@ class player{
 class card{
   let cardSuit: String
   let cardName: String
+  let cardID: String
   var cardValue: Int
 
-  init(cardSuit: String, cardName: String, cardValue: Int){
+  init(cardSuit: String, cardName: String, cardValue: Int, cardID: String){
     self.cardSuit = cardSuit
     self.cardName = cardName
     self.cardValue = cardValue
+    self.cardID = cardID
   }
 }
 
 var gameDeck: Array<card> = Array()
+
+for Suit in 0...3{
+  for ID in 1...14{
+    var newCard: card(cardSuit: "", cardName: "", cardValue = 0, cardID = Suit * 14 + ID)
+    switch ID{
+      case 1:
+        newCard.cardName = "One"
+        newCard.cardValue = 1
+      case 2:
+        newCard.cardName = "Two"
+        newCard.cardValue = 2
+      case 3:
+        newCard.cardName = "Three"
+        newCard.cardValue = 3
+      case 4:
+        newCard.cardName = "Four"
+        newCard.cardValue = 4
+      case 5:
+        newCard.cardName = "Five"
+        newCard.cardValue = 5
+      case 6:
+        newCard.cardName = "Six"
+        newCard.cardValue = 6
+      case 7:
+        newCard.cardName = "Seven"
+        newCard.cardValue = 7
+      case 8:
+        newCard.cardName = "Eight"
+        newCard.cardValue = 8
+      case 9:
+        newCard.cardName = "Nine"
+        newCard.cardValue = 9
+      case 10:
+        newCard.cardName = "Ten"
+        newCard.cardValue = 10
+      case 11:
+        newCard.cardName = "Jack"
+        newCard.cardValue = 10
+      case 12:
+        newCard.cardName = "Queen"
+        newCard.cardValue = 10
+      case 13:
+        newCard.cardName = "King"
+        newCard.cardValue = 10
+      case 14:
+        newCard.cardName = "Ace"
+        newCard.cardValue = 11
+    }
+    switch Suit{
+      case 0:
+        newCard.cardSuit = "Spades"
+      case 1:
+        newCard.cardSuit = "Hearts"
+      case 2:
+        newCard.cardSuit = "Clubs"
+      case 3:
+        newCard.cardSuit = "Diamonds"
+    }
+    gameDeck.append(newCard)
+  }
+}
+
+for num in 0 ..< gameDeck.count{
+  print(gameDeck[num])
+}
