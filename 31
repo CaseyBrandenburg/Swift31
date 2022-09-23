@@ -1,79 +1,92 @@
 import Foundation
 
-class player{
-  let playerName: String
-  let playerAge: Int
-  var handValue: Int
-
-  init(playerName: String, playerAge: Int, handValue: Int){
-    self.playerName = playerName
-    self.playerAge = playerAge
-    self.handValue = handValue
-  }
-}
-
-class card{
+class Card{
   var cardSuit: String
   var cardName: String
-  var cardID: Int
   var cardValue: Int
 
-  init(cardSuit: String, cardName: String, cardValue: Int, cardID: Int){
+  init(cardSuit: String, cardName: String, cardValue: Int){
     self.cardSuit = cardSuit
     self.cardName = cardName
     self.cardValue = cardValue
-    self.cardID = cardID
   }
 }
 
-var gameDeck: Array<card> = Array()
+class Player{
+  let playerName: String
+  let playerAge: Int
+  var handValue: Int = 0
+  var playerHand: Array<Card> = Array()
+
+  init(playerName: String, playerAge: Int){
+    self.playerName = playerName
+    self.playerAge = playerAge
+  }
+}
+
+class GameSpace{
+  var numPlayers: Int = 5
+  var players: Array<Player> = Array()
+  var gameDeck: Array<Card> = Array()
+  var discardPile: Array<Card> = Array()
+}
+
+var currentGame = GameSpace()
+
+//-------------- Fill and Shuffle Deck ---------------
 
 for Suit in 0...3{
-  for ID in 2...14{
-    let newCard = card(cardSuit: "", cardName: "", cardValue: 0, cardID: Suit * 14 + ID - 1)
+  for ID in 1..<14{
+    
+    //Declare a new card
+    let newCard = Card(cardSuit: "", cardName: "", cardValue: 0)
+    
+    //Assign cards their name and value
     switch ID{
-      case 2:
+      case 1:
         newCard.cardName = "Two"
         newCard.cardValue = 2
-      case 3:
+      case 2:
         newCard.cardName = "Three"
         newCard.cardValue = 3
-      case 4:
+      case 3:
         newCard.cardName = "Four"
         newCard.cardValue = 4
-      case 5:
+      case 4:
         newCard.cardName = "Five"
         newCard.cardValue = 5
-      case 6:
+      case 5:
         newCard.cardName = "Six"
         newCard.cardValue = 6
-      case 7:
+      case 6:
         newCard.cardName = "Seven"
         newCard.cardValue = 7
-      case 8:
+      case 7:
         newCard.cardName = "Eight"
         newCard.cardValue = 8
-      case 9:
+      case 8:
         newCard.cardName = "Nine"
         newCard.cardValue = 9
-      case 10:
+      case 9:
         newCard.cardName = "Ten"
         newCard.cardValue = 10
-      case 11:
+      case 10:
         newCard.cardName = "Jack"
         newCard.cardValue = 10
-      case 12:
+      case 11:
         newCard.cardName = "Queen"
         newCard.cardValue = 10
-      case 13:
+      case 12:
         newCard.cardName = "King"
         newCard.cardValue = 10
-      case 14:
+      case 13:
         newCard.cardName = "Ace"
         newCard.cardValue = 11
       default:
         print("Something went wrong in the ID switch statement")
     }
+    
+    //Assign cards their suit
     switch Suit{
       case 0:
         newCard.cardSuit = "Spades"
@@ -86,11 +99,53 @@ for Suit in 0...3{
       default:
         print("Something went wrong in the Suit switch statement")
     }
-    gameDeck.append(newCard)
+    currentGame.gameDeck.append(newCard)
   }
 }
 
-print(gameDeck.count)
+
+
+//----------- Deck Shuffle and Debug Tools -------------
+
+//DEBUG Print Deck
+/*print(gameDeck.count)
 for num in 0 ..< gameDeck.count{
-  print(gameDeck[num].cardID)
+  print("\(gameDeck[num].cardName) of \(gameDeck[num].cardSuit) worth \(gameDeck[num].cardValue)")
+}*/
+
+//Shuffle the Deck
+currentGame.gameDeck.shuffle()
+
+// DEBUG Print Shuffled Deck
+/*print(gameDeck.count)
+for num in 0 ..< gameDeck.count{
+  print("\(gameDeck[num].cardName) of \(gameDeck[num].cardSuit) worth \(gameDeck[num].cardValue)")
+}*/
+
+
+
+//-----------Declare GameSpace and Seat Players-------------
+// print("\u{001B}[2J") to clear the terminal window maybe
+
+//Seat Players
+for num in 0..<currentGame.numPlayers{
+  let newPlayer = Player(playerName: "Player \(num + 1)", playerAge: num + 1)
+  currentGame.players.append(newPlayer)
+}
+
+
+
+//----------------------Deal hands-------------------------
+
+for _ in 1...3{
+  for num in 0..<currentGame.numPlayers{
+    currentGame.players[num].playerHand.append(currentGame.gameDeck.first)
+    currentGame.gameDeck.removeFirst()
+  }
+}
+
+for index in 1...5{
+  for num in 1...3{
+    print("\(currentGame.players[index].playerHand[num].cardName) of \(currentGame.players[index].playerHand[num].cardSuit)")
+  }
 }
