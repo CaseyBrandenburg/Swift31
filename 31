@@ -15,12 +15,55 @@ class Card{
 class Player{
   let playerName: String
   let playerAge: Int
-  var handValue: Int = 0
+  var handValue: Float = 0.0
   var playerHand: Array<Card> = Array()
 
   init(playerName: String, playerAge: Int){
     self.playerName = playerName
     self.playerAge = playerAge
+  }
+
+  func calculateValue(){
+    let card1 = self.playerHand[0]
+    let card2 = self.playerHand[1]
+    let card3 = self.playerHand[2]
+    var spades: Int = 0
+    var hearts: Int = 0
+    var clubs: Int = 0
+    var diamonds: Int = 0
+    var returnValue: Float = 0.0;
+    
+    //If player has 30.5
+    if card1.cardName == card2.cardName && card2.cardName == card3.cardName {
+      returnValue = 30.5
+    }
+
+    for index in 0..<self.playerHand.count{
+      if self.playerHand[index].cardSuit == "Spades"{
+        spades += self.playerHand[index].cardValue
+        if Float(spades) > returnValue{
+          returnValue = Float(spades)
+        }
+      } else if self.playerHand[index].cardSuit == "Hearts"{
+        hearts += self.playerHand[index].cardValue
+        if Float(hearts) > returnValue{
+          returnValue = Float(hearts)
+        }
+      } else if self.playerHand[index].cardSuit == "Clubs"{
+        clubs += self.playerHand[index].cardValue
+        if Float(clubs) > returnValue{
+          returnValue = Float(clubs)
+        }
+      } else if self.playerHand[index].cardSuit == "Diamonds"{
+        diamonds += self.playerHand[index].cardValue
+        if Float(diamonds) > returnValue{
+          returnValue = Float(diamonds)
+        }
+      } else {
+        print("Check the calculate value function in the player class")
+      }
+    }
+    self.handValue = returnValue
   }
 }
 
@@ -108,9 +151,9 @@ for Suit in 0...3{
 //----------- Deck Shuffle and Debug Tools -------------
 
 //DEBUG Print Deck
-/*print(gameDeck.count)
-for num in 0 ..< gameDeck.count{
-  print("\(gameDeck[num].cardName) of \(gameDeck[num].cardSuit) worth \(gameDeck[num].cardValue)")
+/*print(currentGame.gameDeck.count)
+for num in 0 ..< currentGame.gameDeck.count{
+  print("\(currentGame.gameDeck[num].cardName) of \(currentGame.gameDeck[num].cardSuit) worth \(currentGame.gameDeck[num].cardValue)")
 }*/
 
 //Shuffle the Deck
@@ -124,7 +167,7 @@ for num in 0 ..< gameDeck.count{
 
 
 
-//-----------Declare GameSpace and Seat Players-------------
+//-----------Seat Players-------------
 // print("\u{001B}[2J") to clear the terminal window maybe
 
 //Seat Players
@@ -136,16 +179,26 @@ for num in 0..<currentGame.numPlayers{
 
 
 //----------------------Deal hands-------------------------
-
 for _ in 1...3{
   for num in 0..<currentGame.numPlayers{
-    currentGame.players[num].playerHand.append(currentGame.gameDeck.first)
-    currentGame.gameDeck.removeFirst()
+    if let firstCard = currentGame.gameDeck.first{
+      currentGame.players[num].playerHand.append(firstCard)
+      currentGame.gameDeck.removeFirst()
+    }
   }
 }
 
-for index in 1...5{
-  for num in 1...3{
+//DEBUG Print each player, their hand, and their hands value
+for index in 0..<currentGame.numPlayers{
+  currentGame.players[index].calculateValue()
+  print(currentGame.players[index].playerName)
+  for num in 0..<3{
     print("\(currentGame.players[index].playerHand[num].cardName) of \(currentGame.players[index].playerHand[num].cardSuit)")
   }
+  if currentGame.players[index].handValue != 30.5{
+    print("Hand value: \(Int(currentGame.players[index].handValue))")
+  } else {
+    print("Hand value: \(currentGame.players[index].handValue)")
+  }
+  print("")
 }
